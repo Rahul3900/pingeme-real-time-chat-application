@@ -1,37 +1,96 @@
 # 💬 PingMe — Real-Time Chat Application
 
+<p align="center">
+  <b>Scalable • Real-time • Event-driven Chat System</b>
+</p>
+
+<p align="center">
+  <img src="https://img.shields.io/badge/Frontend-React-blue?style=for-the-badge" />
+  <img src="https://img.shields.io/badge/Backend-SpringBoot-green?style=for-the-badge" />
+  <img src="https://img.shields.io/badge/WebSocket-STOMP-orange?style=for-the-badge" />
+  <img src="https://img.shields.io/badge/Kafka-Streaming-black?style=for-the-badge" />
+  <img src="https://img.shields.io/badge/Redis-Caching-red?style=for-the-badge" />
+</p>
+
+---
+
+## 🚀 Overview
+
 PingMe is a **scalable, real-time chat system** built with **React + Spring Boot**, leveraging **WebSockets, Kafka, and Redis** for high-performance messaging and presence tracking.
 
+It leverages:
+
+* ⚡ WebSockets for instant communication
+* 🔄 Kafka for asynchronous message processing
+* 🟢 Redis for presence tracking & rate limiting
+* 🔐 JWT for secure authentication
+
 ---
 
-## 🚀 Features
+## 📸 Screenshots
 
-* 🔐 JWT-based Authentication
-* 💬 Real-time messaging (WebSocket + STOMP)
-* ⚡ Kafka-based async message processing
-* 🟢 Online presence tracking (Redis)
+### 🔐 Login & Chat
+
+| Login                      | Chat                             |
+| -------------------------- | -------------------------------- |
+| ![](screenshots/login.png) | ![](screenshots/chat-window.png) |
+
+---
+
+### 📱 Mobile Views
+
+| Chat                             | Login                             | Users                            |
+| -------------------------------- | --------------------------------- | -------------------------------- |
+| ![](screenshots/mobile-chat.png) | ![](screenshots/mobile-login.png) | ![](screenshots/mobile-user.png) |
+
+---
+
+## 🧠 System Design
+
+### 🔷 Architecture
+
+```mermaid
+flowchart LR
+    A[React Frontend] -->|REST + WebSocket| B[Spring Boot Backend]
+    B --> C[Kafka Producer]
+    C --> D[Kafka Topic]
+    D --> E[Kafka Consumer]
+    E --> F[Database (PostgreSQL)]
+    B --> G[Redis]
+```
+
+---
+
+### 🔷 Message Flow
+
+```mermaid
+sequenceDiagram
+    participant A as Sender
+    participant B as Backend
+    participant K as Kafka
+    participant C as Consumer
+    participant DB as Database
+    participant R as Receiver
+
+    A->>B: Send message
+    B->>K: Publish event
+    K->>C: Consume event
+    C->>DB: Save message
+    C->>R: Push via WebSocket
+```
+
+---
+
+## ✨ Features
+
+* 🔐 JWT Authentication
+* 💬 Real-time messaging
 * ✍️ Typing indicators
+* 🟢 Online/offline presence
 * 📩 Message delivery & seen status
 * 🔔 Live notifications
-* 🔍 Dynamic user discovery
-
----
-
-## 🧠 Architecture
-
-```id="arch_main"
-Frontend (React + Vite)
-        ↓
- REST + WebSocket (STOMP)
-        ↓
-Backend (Spring Boot)
-        ↓
- Kafka (Message Queue)
-        ↓
- Database (PostgreSQL)
-        ↓
- Redis (Presence + Rate Limiting)
-```
+* ⚡ Kafka-based event processing
+* 🚀 Redis rate limiting
 
 ---
 
@@ -46,64 +105,65 @@ Backend (Spring Boot)
 ### Backend
 
 * Spring Boot
-* Spring Security (JWT) 
-* Kafka (Producer + Consumer) 
-* Redis (Online users + rate limiting) 
+* Spring Security (JWT)
+* Kafka (Producer + Consumer)
+* Redis (Presence + Rate Limiting)
 * JPA / Hibernate
 
 ---
 
-## 📁 Structure
+## 📁 Project Structure
 
-```id="struct1"
-project/
+```
+pingme/
 │
-├── frontend/
-├── backend/
+├── pingme-frontend/
+├── pingme-backend/
+├── screenshots/
 └── README.md
 ```
 
 ---
 
-## ⚙️ Setup
+## ⚙️ Local Setup
 
-### Backend
+### 1️⃣ Backend
 
-```bash id="cmd_b1"
-cd backend
+```
+cd pingme-backend
 ./mvnw spring-boot:run
 ```
 
 ---
 
-### Frontend
+### 2️⃣ Frontend
 
-```bash id="cmd_f1"
-cd frontend
+```
+cd pingme-frontend
 npm install
 npm run dev
 ```
 
 ---
 
-## 🔌 Endpoints
+## 🔌 Configuration
 
-### Auth
+### Frontend
 
-* `POST /auth/register`
-* `POST /auth/login`
-
-Handled in: 
+```
+API=http://localhost:8081
+```
 
 ---
 
-### Chat
+### Backend
 
-* `GET /chat/history`
-* `POST /chat/seen`
-* `POST /chat/delivered`
-
-Handled in: 
+```
+server.port=8081
+spring.datasource.url=jdbc:postgresql://localhost:5432/pingme_db
+spring.redis.host=localhost
+spring.kafka.bootstrap-servers=localhost:9092
+```
 
 ---
 
@@ -111,21 +171,22 @@ Handled in:
 
 1. User sends message → WebSocket
 2. Backend → Kafka Producer
-3. Kafka Consumer stores message 
-4. Message pushed to receiver via WebSocket
-5. Status updates (SENT → DELIVERED → SEEN)
+3. Kafka Consumer stores message
+4. Message pushed to receiver
+5. Status updated (SENT → DELIVERED → SEEN)
 
 ---
 
-## 🧠 Highlights
+## 🧠 Key Highlights
 
 * Event-driven architecture (Kafka)
-* Stateless auth (JWT)
-* Real-time presence via Redis
-* Optimized DB queries with indexing 
+* Stateless authentication (JWT)
+* Redis-based presence tracking
+* Optimized DB queries
 
 ---
 
 ## 👨‍💻 Author
 
 **Rahul Rautela**
+

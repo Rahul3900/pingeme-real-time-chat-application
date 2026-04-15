@@ -9,7 +9,7 @@ export function useWebSocket() {
     if (clientRef.current) return; 
 
     const client = new Client({
-      brokerURL: import.meta.env.VITE_WS_URL,
+      brokerURL: "http://localhost:8081/chat",
       connectHeaders: { Authorization: `Bearer ${token}` },
       reconnectDelay: 3000,
       debug: () => {},
