@@ -55,7 +55,7 @@ flowchart LR
     B --> C[Kafka Producer]
     C --> D[Kafka Topic]
     D --> E[Kafka Consumer]
-    E --> F[Database (PostgreSQL)]
+    E --> F[Database - PostgreSQL]
     B --> G[Redis]
 ```
 
